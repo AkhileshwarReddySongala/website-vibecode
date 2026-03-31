@@ -1,0 +1,580 @@
+:root {
+  /* Font Families */
+  --font-heading: 'Outfit', sans-serif;
+  --font-body: 'Inter', sans-serif;
+  
+  /* Core Spacing & Speeds */
+  --transition-speed: 0.4s;
+  --border-radius: 20px;
+  --task-radius: 14px;
+  
+  /* --- Light Theme Palette --- */
+  --bg-color: #f1f5f9;
+  --mesh-1: rgba(99, 102, 241, 0.4);   /* Indigo */
+  --mesh-2: rgba(236, 72, 153, 0.4);   /* Pink */
+  --mesh-3: rgba(16, 185, 129, 0.3);   /* Emerald */
+  
+  /* Glass Cards */
+  --glass-bg: rgba(255, 255, 255, 0.65);
+  --glass-border: rgba(255, 255, 255, 0.5);
+  --glass-shadow: 0 20px 40px rgba(0, 0, 0, 0.08);
+  
+  /* Elements */
+  --task-bg: rgba(255, 255, 255, 0.7);
+  --task-bg-hover: rgba(255, 255, 255, 0.95);
+  
+  /* Typography */
+  --text-primary: #0f172a;
+  --text-secondary: #64748b;
+  
+  /* Accents */
+  --accent-color: #6366f1;
+  --accent-hover: #4f46e5;
+  --accent-glow: rgba(99, 102, 241, 0.4);
+  
+  /* Category Pills */
+  --cat-work-bg: rgba(59, 130, 246, 0.15);
+  --cat-work-text: #2563eb;
+  --cat-personal-bg: rgba(236, 72, 153, 0.15);
+  --cat-personal-text: #db2777;
+  --cat-health-bg: rgba(16, 185, 129, 0.15);
+  --cat-health-text: #059669;
+  --cat-other-bg: rgba(245, 158, 11, 0.15);
+  --cat-other-text: #d97706;
+}
+
+[data-theme='dark'] {
+  /* --- Dark Theme Palette --- */
+  --bg-color: #020617;
+  --mesh-1: rgba(79, 70, 229, 0.35);    /* Deep Indigo */
+  --mesh-2: rgba(192, 38, 211, 0.35);   /* Fuchsia */
+  --mesh-3: rgba(5, 150, 105, 0.25);    /* Emerald */
+  
+  /* Glass Cards */
+  --glass-bg: rgba(15, 23, 42, 0.6);
+  --glass-border: rgba(255, 255, 255, 0.05);
+  --glass-shadow: 0 24px 48px rgba(0, 0, 0, 0.6);
+  
+  /* Elements */
+  --task-bg: rgba(30, 41, 59, 0.6);
+  --task-bg-hover: rgba(30, 41, 59, 1);
+  
+  /* Typography */
+  --text-primary: #f8fafc;
+  --text-secondary: #94a3b8;
+  
+  /* Accents */
+  --accent-color: #818cf8;
+  --accent-hover: #6366f1;
+  --accent-glow: rgba(129, 140, 248, 0.5);
+  
+  /* Category Pills */
+  --cat-work-bg: rgba(96, 165, 250, 0.2);
+  --cat-work-text: #93c5fd;
+  --cat-personal-bg: rgba(244, 114, 182, 0.2);
+  --cat-personal-text: #fbcfe8;
+  --cat-health-bg: rgba(52, 211, 153, 0.2);
+  --cat-health-text: #6ee7b7;
+  --cat-other-bg: rgba(251, 191, 36, 0.2);
+  --cat-other-text: #fcd34d;
+}
+
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+/* Animated Mesh Gradient Background */
+body {
+  font-family: var(--font-body);
+  color: var(--text-primary);
+  background-color: var(--bg-color);
+  
+  /* Create the multi-layered mesh gradient */
+  background-image: 
+    radial-gradient(at 10% 20%, var(--mesh-1) 0px, transparent 50%),
+    radial-gradient(at 80% 80%, var(--mesh-2) 0px, transparent 50%),
+    radial-gradient(at 50% 50%, var(--mesh-3) 0px, transparent 50%);
+  background-attachment: fixed;
+  background-size: cover;
+  
+  transition: background-color var(--transition-speed), color var(--transition-speed);
+  display: flex;
+  justify-content: center;
+  align-items: flex-start;
+  min-height: 100vh;
+  padding: 3rem 1rem;
+  overflow-x: hidden;
+}
+
+/* Apply a subtle breathing animation to the background */
+@keyframes meshBreathe {
+  0% { background-position: 0% 0%; }
+  50% { background-position: 100% 100%; }
+  100% { background-position: 0% 0%; }
+}
+body {
+  animation: meshBreathe 20s ease-in-out infinite alternate;
+}
+
+#root {
+  width: 100%;
+  max-width: 650px;
+}
+
+h1, h2, h3 {
+  font-family: var(--font-heading);
+}
+
+/* The Glass Card Main Container */
+.app-container {
+  background: var(--glass-bg);
+  backdrop-filter: blur(24px);
+  -webkit-backdrop-filter: blur(24px);
+  border: 1px solid var(--glass-border);
+  border-radius: var(--border-radius);
+  padding: 2.5rem;
+  box-shadow: var(--glass-shadow);
+  transition: all var(--transition-speed);
+  
+  /* Subtle inner glow */
+  box-shadow: inset 0 1px 0 0 rgba(255, 255, 255, 0.1), var(--glass-shadow);
+}
+
+.header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 2.5rem;
+  position: relative;
+}
+
+.title {
+  font-size: 2.5rem;
+  font-weight: 800;
+  letter-spacing: -1px;
+  background: linear-gradient(135deg, var(--text-primary) 0%, var(--accent-color) 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  text-shadow: 0 4px 20px rgba(0,0,0,0.05);
+}
+
+.theme-toggle {
+  background: var(--task-bg);
+  border: 1px solid var(--glass-border);
+  color: var(--text-primary);
+  width: 48px;
+  height: 48px;
+  border-radius: 50%;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1.4rem;
+  transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+  box-shadow: 0 4px 12px rgba(0,0,0,0.05);
+}
+
+.theme-toggle:hover {
+  transform: scale(1.1) rotate(15deg);
+  background: var(--task-bg-hover);
+  border-color: var(--accent-color);
+  color: var(--accent-color);
+}
+
+/* Form Styles */
+.task-form {
+  display: flex;
+  flex-direction: column;
+  gap: 1.2rem;
+  margin-bottom: 3rem;
+  position: relative;
+}
+
+/* Floating label effect container */
+.input-group {
+  display: flex;
+  gap: 0.8rem;
+  position: relative;
+  width: 100%;
+}
+
+.task-input {
+  flex: 1;
+  padding: 1.2rem;
+  border-radius: var(--task-radius);
+  border: 2px solid transparent;
+  background-color: var(--task-bg);
+  color: var(--text-primary);
+  font-family: var(--font-body);
+  font-size: 1.05rem;
+  transition: all 0.3s ease;
+  box-shadow: 0 2px 10px rgba(0,0,0,0.02);
+}
+
+.task-input::placeholder {
+  color: var(--text-secondary);
+  opacity: 0.7;
+}
+
+.task-input:focus {
+  outline: none;
+  background-color: var(--task-bg-hover);
+  border-color: var(--accent-color);
+  box-shadow: 0 0 0 4px var(--accent-glow);
+  transform: translateY(-2px);
+}
+
+.category-select {
+  padding: 0 1.2rem;
+  border-radius: var(--task-radius);
+  border: 2px solid transparent;
+  background-color: var(--task-bg);
+  color: var(--text-primary);
+  font-family: var(--font-body);
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  appearance: none;
+  /* Custom arrow */
+  background-image: url("data:image/svg+xml;charset=US-ASCII,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20width%3D%22292.4%22%20height%3D%22292.4%22%3E%3Cpath%20fill%3D%22%2364748b%22%20d%3D%22M287%2069.4a17.6%2017.6%200%200%200-13-5.4H18.4c-5%200-9.3%201.8-12.9%205.4A17.6%2017.6%200%200%200%200%2082.2c0%205%201.8%209.3%205.4%2012.9l128%20127.9c3.6%203.6%207.8%205.4%2012.8%205.4s9.2-1.8%2012.8-5.4L287%2095c3.5-3.5%205.4-7.8%205.4-12.8%200-5-1.9-9.2-5.5-12.8z%22%2F%3E%3C%2Fsvg%3E");
+  background-repeat: no-repeat;
+  background-position: right 1rem top 50%;
+  background-size: 0.65rem auto;
+  padding-right: 2.5rem;
+}
+
+.category-select:focus, .category-select:hover {
+  background-color: var(--task-bg-hover);
+  border-color: var(--glass-border);
+}
+
+.add-btn {
+  padding: 0 2rem;
+  border-radius: var(--task-radius);
+  border: none;
+  background: linear-gradient(135deg, var(--accent-color), var(--accent-hover));
+  color: white;
+  font-family: var(--font-heading);
+  font-weight: 700;
+  font-size: 1.05rem;
+  cursor: pointer;
+  transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+  box-shadow: 0 8px 16px var(--accent-glow);
+}
+
+.add-btn:hover {
+  transform: translateY(-3px) scale(1.02);
+  box-shadow: 0 12px 24px var(--accent-glow);
+}
+
+.add-btn:active {
+  transform: translateY(1px);
+}
+
+/* Task List */
+.task-list {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+  list-style: none;
+  margin-bottom: 2rem;
+}
+
+/* Staggered entrance animation for tasks */
+@keyframes slideUpFade {
+  from { opacity: 0; transform: translateY(20px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+.task-item {
+  display: flex;
+  align-items: center;
+  padding: 1.2rem;
+  background-color: var(--task-bg);
+  border: 1px solid var(--glass-border);
+  border-radius: var(--task-radius);
+  transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
+  gap: 1.2rem;
+  position: relative;
+  overflow: hidden;
+  animation: slideUpFade 0.4s ease-out forwards;
+}
+
+/* Animated sidebar highlight on hover */
+.task-item::before {
+  content: '';
+  position: absolute;
+  left: 0;
+  top: 0;
+  height: 100%;
+  width: 4px;
+  background-color: var(--accent-color);
+  transform: scaleY(0);
+  transition: transform 0.3s ease;
+  transform-origin: center;
+}
+
+.task-item:hover {
+  transform: translateX(6px) translateY(-2px);
+  background-color: var(--task-bg-hover);
+  box-shadow: 0 10px 20px rgba(0,0,0,0.06);
+  border-color: transparent;
+}
+
+.task-item:hover::before {
+  transform: scaleY(1);
+}
+
+.task-item.completed {
+  opacity: 0.65;
+  background-color: transparent;
+  border-style: dashed;
+}
+
+.task-item.completed:hover {
+  transform: none;
+  box-shadow: none;
+  border-color: var(--glass-border);
+}
+
+.task-item.completed::before {
+  display: none;
+}
+
+.task-item.completed .task-text {
+  text-decoration: line-through;
+  color: var(--text-secondary);
+}
+
+.task-checkbox-container {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.task-checkbox {
+  appearance: none;
+  width: 26px;
+  height: 26px;
+  border: 2px solid var(--text-secondary);
+  border-radius: 8px;
+  cursor: pointer;
+  transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+  position: relative;
+  background: transparent;
+}
+
+.task-checkbox:hover {
+  border-color: var(--accent-color);
+  transform: scale(1.1);
+}
+
+.task-checkbox:checked {
+  background-color: var(--accent-color);
+  border-color: var(--accent-color);
+  transform: scale(1.1) rotate(5deg);
+}
+
+.task-checkbox:checked::after {
+  content: '✓';
+  position: absolute;
+  color: white;
+  font-size: 16px;
+  font-weight: bold;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+}
+
+.task-content {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 0.4rem;
+}
+
+.task-text {
+  font-size: 1.15rem;
+  font-weight: 500;
+  transition: all 0.3s ease;
+  line-height: 1.4;
+}
+
+/* Styled Category Pills */
+.task-category {
+  font-size: 0.75rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.8px;
+  padding: 4px 12px;
+  border-radius: 20px;
+  display: inline-block;
+  align-self: flex-start;
+}
+
+.cat-work { 
+  background-color: var(--cat-work-bg);
+  color: var(--cat-work-text); 
+}
+.cat-personal { 
+  background-color: var(--cat-personal-bg);
+  color: var(--cat-personal-text); 
+}
+.cat-health { 
+  background-color: var(--cat-health-bg);
+  color: var(--cat-health-text); 
+}
+.cat-other { 
+  background-color: var(--cat-other-bg);
+  color: var(--cat-other-text); 
+}
+
+.delete-task-btn {
+  background: var(--task-bg);
+  border: 1px solid var(--glass-border);
+  color: var(--text-secondary);
+  width: 36px;
+  height: 36px;
+  border-radius: 10px;
+  cursor: pointer;
+  font-size: 1.2rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.2s ease;
+  opacity: 0; /* Hidden by default */
+  transform: scale(0.9);
+}
+
+.task-item:hover .delete-task-btn {
+  opacity: 1; /* Fade in on row hover */
+  transform: scale(1);
+}
+
+.delete-task-btn:hover {
+  color: white;
+  background-color: #ef4444; /* red */
+  border-color: #ef4444;
+  transform: scale(1.1) rotate(90deg);
+}
+
+/* Empty State */
+.empty-state {
+  text-align: center;
+  padding: 4rem 2rem;
+  color: var(--text-secondary);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 1rem;
+}
+
+.empty-state-icon {
+  font-size: 3rem;
+  opacity: 0.5;
+  margin-bottom: 0.5rem;
+}
+
+/* Danger Zone */
+.clear-section {
+  border-top: 2px dashed var(--glass-border);
+  padding-top: 2rem;
+  margin-top: 2rem;
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+.danger-zone-title {
+  font-size: 0.85rem;
+  color: var(--text-secondary);
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 1.5px;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.danger-zone-title::before, .danger-zone-title::after {
+  content: '';
+  height: 1px;
+  flex: 1;
+  background: var(--glass-border);
+}
+
+.clear-input-group {
+  display: flex;
+  gap: 0.8rem;
+}
+
+.clear-input {
+  flex: 1;
+  padding: 1rem 1.2rem;
+  border-radius: var(--task-radius);
+  border: 2px solid transparent;
+  background-color: var(--task-bg);
+  color: var(--text-primary);
+  font-size: 0.95rem;
+  font-family: var(--font-body);
+  transition: all 0.3s ease;
+}
+
+.clear-input:focus {
+  outline: none;
+  background-color: var(--task-bg-hover);
+  border-color: rgba(239, 68, 68, 0.4);
+  box-shadow: 0 0 0 4px rgba(239, 68, 68, 0.15);
+}
+
+.clear-btn {
+  background: linear-gradient(135deg, #ef4444, #dc2626);
+  color: white;
+  border: none;
+  padding: 0 2rem;
+  border-radius: var(--task-radius);
+  font-weight: 700;
+  font-family: var(--font-heading);
+  letter-spacing: 0.5px;
+  cursor: pointer;
+  transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+}
+
+.clear-btn:hover:not(:disabled) {
+  transform: translateY(-2px);
+  box-shadow: 0 8px 20px rgba(239, 68, 68, 0.4);
+}
+
+.clear-btn:disabled {
+  background: var(--task-bg);
+  color: var(--text-secondary);
+  border: 1px solid var(--glass-border);
+  cursor: not-allowed;
+  transform: none;
+  box-shadow: none;
+}
+
+/* Responsive adjustments */
+@media (max-width: 600px) {
+  .app-container {
+    padding: 1.5rem;
+  }
+  
+  .input-group {
+    flex-direction: column;
+  }
+  
+  .add-btn {
+    padding: 1.2rem;
+  }
+  
+  .task-item {
+    flex-wrap: wrap;
+  }
+  
+  .delete-task-btn {
+    opacity: 1; /* Always show on mobile since no hover */
+  }
+}
